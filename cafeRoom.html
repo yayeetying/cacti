@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en-US">
+
+
+<head>
+	<title> cacti </title>
+	<link rel="stylesheet" href="styles.css">
+
+	<div class="header center">
+		<h1 id="name"> cacti </h1>
+	</div>
+
+	<div class="navbar">
+		<button class="button active"> Cafe
+		<button class="button"> Karaoke
+		<button class="button"> Kpop
+		<button class="button"> Jpop
+	</div>
+</head>
+
+
+<body>
+	<div class="hiCactus">
+		<button class="dialogue one"> Welcome to cafe cacti! What can I get started for you? </button>
+
+		<button class="choiceButton choiceOne" onclick="drink(1);"> Coffee </button>
+		<button class="choiceButton choiceTwo" onclick="drink(2);"> Milk Tea </button>
+		<button class="choiceButton choiceThree" onclick="drink(3);"> Pea Flower Tea </button>
+		<button class="choiceButton choiceFour" onclick="drink(4);"> Apple Juice </button>
+
+		<button id="drink" class="dialogue two"> </button>
+	</div>
+	<div class="byeCactus"> </div>
+
+
+	<div> <!-- Music Player -->
+		<audio id="firstDate" src="audio/cafe/firstDate.mp3"> </audio>
+		<audio id="nearby" src="audio/cafe/nearby.mp3"> </audio>
+		<audio id="newShoes" src="audio/cafe/newShoes.mp3"> </audio>
+		<audio id="musicForHappiness" src="audio/cafe/musicForHappiness.mp3"> </audio>
+		<audio id="sorryILikeYou" src="audio/cafe/sorryILikeYou.mp3"> </audio>
+
+		<button id="infoButton" onclick="randomSong('cafe');"> Click me to start the audio! </button>
+		<button class="playpauseButton playpauseLeft">
+		<button class="playpauseButton playpauseRight">
+		<button class="playpause" onclick="playpause();">
+
+		<button class="forwardbackButton right" onclick="next();"> </button>
+		<button class="forwardbackButton left" onclick="prev()"> </button>
+	</div>
+
+
+
+
+	<script>
+		var currentSong = undefined;
+		var index = 0;
+		var songOrder = [];
+
+		function drink(num){
+			if (num==1) str="Drink away the bitterness of life :)";
+			else if (num==2) str="A little milk and sugar goes a long way :)";
+			else if (num==3) str="Aren't you curious how this drink is blue? :)"
+			else if (num==4) str="Doesn't apple juice remind you of childhood? :)"
+
+			document.getElementById("drink").innerHTML = "Here you are! " + str;
+		}
+
+		function genSongOrder(room){
+			if (room == 'cafe'){
+				while (songOrder.length != 5) {
+					randNum = Math.floor(Math.random() * 5); //rand # from [0,4]
+					if (randNum == 0 && !songOrder.includes("firstDate")) {
+						songOrder.push("firstDate");
+					}
+					else if (randNum == 1 && !songOrder.includes('nearby')) {
+						songOrder.push('nearby');
+					}
+					else if (randNum == 2 && !songOrder.includes('newShoes')) {
+						songOrder.push('newShoes');
+					}
+					else if (randNum == 3 && !songOrder.includes('musicForHappiness')) {
+						songOrder.push('musicForHappiness');
+					}
+					else if (randNum == 4 && !songOrder.includes('sorryILikeYou')) {
+						songOrder.push('sorryILikeYou');
+					}
+				}
+			}
+		}
+
+		function randomSong(room) { //call when first starting
+			if (currentSong == undefined) {
+				if (room == 'cafe') {
+					randNum = Math.floor(Math.random() * 5); //rand # from [0,4]
+					if (randNum == 0) {
+						songOrder.push("firstDate");
+					}
+					else if (randNum == 1) {
+						songOrder.push("nearby");
+					}
+					else if (randNum == 2) {
+						songOrder.push("newShoes");
+					}
+					else if (randNum == 3) {
+						songOrder.push("musicForHappiness");
+					}
+					else {
+						songOrder.push("sorryILikeYou");
+					}
+				}
+				genSongOrder('cafe');
+				currentSong = songOrder[0];
+				document.getElementById(currentSong).play();
+				displaySong();
+			}
+		}
+
+		function displaySong(){
+			document.getElementById("infoButton").innerHTML = "Now Playing: "+ currentSong;
+			// setInterval(isDone(), 1000);
+		}
+
+		function playpause(){
+			if (document.getElementById(currentSong).paused) playAudio();
+			else {pauseAudio();}
+		}
+		function pauseAudio(){
+			document.getElementById(currentSong).pause();
+		}
+		function playAudio(){
+			document.getElementById(currentSong).play();
+		}
+
+		function next(){
+			pauseAudio();
+			document.getElementById(currentSong).currentTime = 0;
+
+			index += 1;
+			if (index >= 5) index = 0;
+			currentSong = songOrder[index];
+			document.getElementById(currentSong).play();
+			displaySong();
+		}
+		function prev(){
+			pauseAudio();
+			document.getElementById(currentSong).currentTime = 0;
+
+			index -= 1;
+			if (index < 0) index = 4;
+			currentSong = songOrder[index];
+			document.getElementById(currentSong).play();
+			displaySong();
+		}
+
+		// function check(){
+		// 	window.setInterval(isDone(), 1000);
+		// }
+
+		// function isDone(){
+		// 	if (currentSong != undefined){
+		// 		let yourSong = document.getElementById(currentSong);
+		// 		let done = Math.floor(yourSong.duration);
+		// 		if (yourSong.currentTime >= done) {
+		// 			index += 1;
+		// 			if (index >= 5) index = 0;
+		// 			currentSong = songOrder[index];
+		// 			document.getElementById(currentSong).play();
+		// 			displaySong();
+		// 		}
+		// 	}
+		// }
+
+	</script>
+
+</body>
+
+
+</html>
